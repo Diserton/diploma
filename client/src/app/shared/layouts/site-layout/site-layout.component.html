@@ -1,0 +1,41 @@
+<ul class="sidenav sidenav-fixed a-sidenav light-blue lighten-1 z-depth-5">
+  <li class="bold center light-blue">
+    <h3 class="m0 p10 white-text">АРМ</h3>
+  </li>
+  <li
+    class="bold"
+    *ngFor="let link of links"
+    routerLinkActive="active"
+  >
+    <a [routerLink]="[link.url]" class="waves-effect waves-teal white-text">
+      {{link.name}}
+    </a>
+  </li>
+  <li class="bold last light-blue">
+    <a class="waves-effect waves-red white-text" (click)="logout($event)">Выйти</a>
+  </li>
+</ul>
+
+<main class="content">
+  <router-outlet></router-outlet>
+</main>
+
+<div class="fixed-action-btn" #floating>
+  <a class="btn-floating btn-large red">
+    <i class="large material-icons">add</i>
+  </a>
+  <ul>
+    <li>
+      <a class="btn-floating green" routerLink="/order">
+        <i class="material-icons">assignment</i>
+      </a>
+    </li>
+    <li>
+      <a class="btn-floating blue" routerLink="/categories/new">
+        <i class="material-icons">list</i>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<a id="menu" class="waves-effect waves-light btn btn-floating"><i class="material-icons">info</i></a>

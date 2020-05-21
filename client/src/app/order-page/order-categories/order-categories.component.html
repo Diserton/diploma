@@ -1,0 +1,25 @@
+<div *ngIf="categories$ | async as categories; else loader">
+  <div class="frow order-row" *ngIf="categories.length !== 0; else empty">
+    <div
+      *ngFor="let category of categories"
+      class="card waves-effect pointer z-depth-5"
+      [routerLink]="['/order', category._id]"
+    >
+      <div class="card-image">
+        <img
+          [src]="category.imageSrc"
+        >
+      </div>
+      <div class="card-content">
+        <span class="card-title center">{{category.name}}</span>
+      </div>
+    </div>
+  </div>
+  <ng-template #empty>
+    <div class="center">Категорий пока нет</div>
+  </ng-template>
+</div>
+
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>
