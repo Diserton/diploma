@@ -2,9 +2,10 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from
 import {NavigationEnd, Router} from "@angular/router"
 import {MaterialInstance, MaterialService} from "../shared/classes/material.service"
 import {OrderService} from "./order.service"
-import {Order, OrderPosition} from "../shared/interfaces"
+import {Order, OrderPosition, Position} from "../shared/interfaces"
 import {OrdersService} from "../shared/services/orders.service"
 import {Subscription} from "rxjs"
+import {PositionsService} from "../shared/services/positions.service"
 
 @Component({
   selector: 'app-order-page',
@@ -22,7 +23,8 @@ export class OrderPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(private router: Router,
               public order: OrderService,
-              private ordersService: OrdersService) {
+              private ordersService: OrdersService,
+              private positionsService: PositionsService) {
   }
 
   ngOnInit() {
@@ -64,22 +66,47 @@ export class OrderPageComponent implements OnInit, OnDestroy, AfterViewInit {
 
     const order: Order = {
       list: this.order.list.map(item => {
-        delete item._id
+        //delete item._id
         return item
       })
     }
 
-    this.oSub = this.ordersService.create(order).subscribe(
-      newOrder => {
-        MaterialService.toast(`Заказ №${newOrder.order} был добавлен`)
-        this.order.clear()
-      },
-      error => MaterialService.toast(error.error.message),
-      () => {
-        this.modal.close()
-        this.pending = false
-      }
-    )
+
+
+
+      this.oSub = this.ordersService.create(order).subscribe(
+        newOrder => {
+          this.updateBalance(order)
+          MaterialService.toast(`Заказ №${newOrder.order} был добавлен`)
+          this.order.clear()
+        },
+        error => MaterialService.toast(error.error.message),
+        () => {
+          this.modal.close()
+          this.pending = false
+        }
+      )
+
   }
 
+  private updateBalance(order: Order) {
+
+    order.list.forEach(item=>{
+      this.positionsService.get(item._id).subscribe(pos => {
+        const newPosition: Position = {
+          name: pos.name,
+          cost: pos.cost,
+          category: pos.category,
+          quantity: pos.quantity - item.quantity,
+          _id: pos._id
+        }
+        this.positionsService.update(newPosition).subscribe(pos=>{
+          console.log(`Успех. Остаток: ${pos.name} - ${pos.quantity} `)
+          },
+          () => {
+          console.log('Ошибка')
+        })
+      })
+    })
+  }
 }

@@ -10,8 +10,12 @@ export class PositionsService {
   constructor(private http: HttpClient) {
   }
 
-  fetch(categoryId: string): Observable<Position[]> {
-    return  this.http.get<Position[]>(`/api/position/${categoryId}`)
+  fetch(id: string): Observable<Position[]> {
+    return  this.http.get<Position[]>(`/api/position/category/${id}`)
+  }
+
+  get(id: string): Observable<Position> {
+    return  this.http.get<Position>(`/api/position/${id}`)
   }
 
   create(position: Position): Observable<Position> {

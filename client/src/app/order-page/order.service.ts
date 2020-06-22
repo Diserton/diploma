@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core"
 import {OrderPosition, Position} from "../shared/interfaces"
+import {PositionsService} from "../shared/services/positions.service"
 
 
 
@@ -27,6 +28,8 @@ export class OrderService {
     }
 
     this.computePrice()
+
+
   }
 
   remove(orderPosition: OrderPosition) {
@@ -45,4 +48,5 @@ export class OrderService {
       return total += item.quantity * item.cost
     }, 0)
   }
+
 }

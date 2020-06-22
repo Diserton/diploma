@@ -11,6 +11,11 @@ const positionSchema = new Schema({
         type: Number,
         required: true
     },
+    // add quantity
+    quantity: {
+        type: Number,
+        default: 0
+    },
     category: {
         ref: 'categories',
         type: Schema.Types.ObjectId

@@ -21,7 +21,7 @@ import {PositionsFormComponent} from './categories-page/categories-form/position
 import {OrderCategoriesComponent} from './order-page/order-categories/order-categories.component'
 import {OrderPositionsComponent} from './order-page/order-positions/order-positions.component';
 import { HistoryListComponent } from './history-page/history-list/history-list.component';
-import { HistoryFilterComponent } from './history-page/history-filter/history-filter.component'
+import { HistoryFilterComponent } from './history-page/history-filter/history-filter.component';
 
 
 @NgModule({
@@ -49,7 +49,6 @@ import { HistoryFilterComponent } from './history-page/history-filter/history-fi
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    ReactiveFormsModule,
     HttpClientModule
   ],
   providers: [{

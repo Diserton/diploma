@@ -17,9 +17,10 @@
           class="collection-item collection-item-icon"
           (click)="onSelectPosition(position)"
         >
-          <span>
-            {{position.name}} <strong>{{position.cost}} сом</strong>
-          </span>
+          {{position.name}}
+          <span class="new badge blue" data-badge-caption="сом">Цена: {{position.cost}}</span>
+          <span class="new badge blue" data-badge-caption="шт.">Количество: {{position.quantity}}</span>
+
           <span>
             <i class="material-icons" (click)="onDeletePosition($event, position)">delete</i>
           </span>
@@ -67,6 +68,22 @@
         <label for="pos-cost">Цена</label>
         <span
           *ngIf="form.get('cost').invalid && form.get('cost').touched"
+          class="helper-text red-text"
+        >
+          Введите цену. Минимальное значение 1
+        </span>
+      </div>
+      <div class="input-field">
+        <input
+          formControlName="quantity"
+          id="pos-quantity"
+          type="number"
+          min="0"
+          [ngClass]="{'invalid': form.get('quantity').invalid && form.get('quantity').touched}"
+        >
+        <label for="pos-quantity">Количество</label>
+        <span
+          *ngIf="form.get('quantity').invalid && form.get('quantity').touched"
           class="helper-text red-text"
         >
           Введите цену. Минимальное значение 1

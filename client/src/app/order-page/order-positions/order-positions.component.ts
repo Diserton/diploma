@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router"
 import {PositionsService} from "../../shared/services/positions.service"
-import {Observable} from "rxjs"
+import {Observable, of} from "rxjs"
 import {Position} from "../../shared/interfaces"
 import {map, switchMap} from "rxjs/operators"
 import {OrderService} from "../order.service"
@@ -18,7 +18,7 @@ export class OrderPositionsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private positionsService: PositionsService,
-              private order: OrderService) { }
+              private order: OrderService) {}
 
   ngOnInit(): void {
     this.positions$ = this.route.params
@@ -40,8 +40,17 @@ export class OrderPositionsComponent implements OnInit {
   }
 
   addToOrder(position: Position) {
-    MaterialService.toast(`Добавлено х${position.quantity}`)
-    this.order.add(position)
+
+    this.positionsService.get(position._id).subscribe(currentPosition => {
+      if (currentPosition.quantity >= position.quantity) {
+        MaterialService.toast(`Добавлено х${position.quantity}`)
+        this.order.add(position)
+      } else  {
+        MaterialService.toast(`Недостаточно товаров на складе`)
+      }
+
+    })
+
   }
 
 }
